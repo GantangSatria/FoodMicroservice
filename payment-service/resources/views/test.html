@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Midtrans Snap.js Example</title>
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-TStFVfFHdB_COqUj"></script>
+</head>
+<body>
+  <h2>Order Payment</h2>
+  <button id="pay-button">Pay Now</button>
+
+  <script>
+    document.getElementById('pay-button').addEventListener('click', function () {
+      fetch('http://localhost:8000/payments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order_id: 'order-' + Date.now(), // generate random order ID
+          amount: 10000 // example: 10,000 IDR
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Open Snap popup
+        snap.pay(data.snap_token, {
+          onSuccess: function(result) {
+            console.log('Payment success:', result);
+            alert('Payment successful!');
+          },
+          onPending: function(result) {
+            console.log('Payment pending:', result);
+            alert('Payment is pending.');
+          },
+          onError: function(result) {
+            console.error('Payment failed:', result);
+            alert('Payment failed.');
+          },
+          onClose: function() {
+            console.log('User closed the popup.');
+            alert('Payment popup closed.');
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching Snap token:', error);
+        alert('Failed to initiate payment.');
+      });
+    });
+  </script>
+</body>
+</html>
