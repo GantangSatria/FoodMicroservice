@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('order_id');
             $table->integer('amount');
             $table->enum('status', ['PENDING', 'PAID', 'EXPIRED', 'CANCELLED'])->default('PENDING');
+            $table->string('transaction_id')->nullable();
             $table->text('midtrans_token')->nullable();
             $table->text('midtrans_redirect_url')->nullable();
             $table->timestamps();

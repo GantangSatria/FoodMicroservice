@@ -18,5 +18,6 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/payments', 'PaymentController@create');
-$router->post('/payments/webhook', 'PaymentController@handleCallback');
+$router->post('/payments/callback', 'PaymentController@handleCallback');
+$router->post('/payments/webhook', 'PaymentController@handleWebhook');
 
