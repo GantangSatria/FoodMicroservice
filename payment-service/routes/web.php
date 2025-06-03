@@ -21,3 +21,6 @@ $router->post('/payments', 'PaymentController@create');
 $router->post('/payments/callback', 'PaymentController@handleCallback');
 $router->post('/payments/webhook', 'PaymentController@handleWebhook');
 
+$router->get('/test-payment', function () {
+    return response()->file(resource_path('views/test.html'));
+});
