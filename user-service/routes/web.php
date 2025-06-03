@@ -16,3 +16,10 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->post('/users', 'UserController@store'); // Called from auth-service
+$router->group(['middleware' => 'jwt.auth'], function () use ($router) {
+    $router->get('/users/me', 'UserController@me');      // Get profile
+    $router->put('/users/me', 'UserController@update');  // Update profile
+    $router->delete('/users/me', 'UserController@delete'); // Delete
+});
