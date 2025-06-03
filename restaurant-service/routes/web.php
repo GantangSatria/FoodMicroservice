@@ -16,3 +16,11 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/restaurants', 'RestaurantController@index');
+$router->post('/restaurants', 'RestaurantController@store');
+$router->get('/restaurants/{uuid}', 'RestaurantController@show');
+
+$router->get('/restaurants/{restaurantId}/menu-items', 'MenuItemController@index');
+$router->post('/restaurants/{restaurantId}/menu-items', 'MenuItemController@store');
+$router->get('/menu-items/{uuid}', 'MenuItemController@show');
