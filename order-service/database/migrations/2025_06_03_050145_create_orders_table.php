@@ -13,7 +13,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->string('order_number', 50)->unique();
             $table->uuid('user_uuid');
-            $table->foreignId('restaurant_id')->constrained('restaurants')->onDelete('cascade');
+            $table->unsignedBigInteger('restaurant_id');
             $table->decimal('total_amount', 10, 2);
             $table->enum('status', ['pending', 'confirmed', 'delivered', 'cancelled'])->default('pending');
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
