@@ -169,9 +169,10 @@ class PaymentController extends Controller
         // Notify Order Service if successful
         if ($internalStatus === 'paid') {
             $client = new Client();
+            $orderServiceUrl = env('ORDER_SERVICE_URL');
 
             try {
-                $response = $client->patch("http://localhost:8001/orders/{$orderId}/payment-status", [
+                $response = $client->patch("{$orderServiceUrl}/orders/{$orderId}/payment-status", [
                     'json' => ['payment_status' => 'paid'],
                     'timeout' => 5, // Optional: timeout in seconds
                 ]);
