@@ -16,3 +16,7 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->post('/payments', 'PaymentController@create');
+$router->post('/payments/webhook', 'PaymentController@handleCallback');
+
