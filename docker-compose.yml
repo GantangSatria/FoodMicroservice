@@ -1,0 +1,167 @@
+services:
+  api-gateway:
+    build: ./api_gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - auth-service
+      - user-service
+      - restaurant-service
+      - order-service
+      - payment-service
+    networks:
+      - backend-network
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "8004:8004"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-auth
+      DB_PORT: 3306
+      DB_DATABASE: auth_service_db
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+      USER_SERVICE_URL: http://user-service:8003
+    depends_on:
+      - mysql-auth
+      - user-service
+    networks:
+      - backend-network
+
+  mysql-auth:
+    image: mysql:8
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes" 
+      MYSQL_DATABASE: auth_service_db
+    ports:
+      - "33061:3306"    
+    volumes:
+      - auth_db_data:/var/lib/mysql
+    networks:
+      - backend-network
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "8003:8003"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-user
+      DB_PORT: 3306
+      DB_DATABASE: user_service_db
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+      AUTH_SERVICE_URL: http://auth-service:8004
+    depends_on:
+      - mysql-user
+    networks:
+      - backend-network
+
+  mysql-user:
+    image: mysql:8
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: user_service_db
+    ports:
+      - "33062:3306"
+    volumes:
+      - user_db_data:/var/lib/mysql
+    networks:
+      - backend-network
+
+  restaurant-service:
+    build: ./restaurant-service
+    ports:
+      - "8002:8002"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-restaurant
+      DB_PORT: 3306
+      DB_DATABASE: restaurant_service_db
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+    depends_on:
+      - mysql-restaurant
+    networks:
+      - backend-network
+
+  mysql-restaurant:
+    image: mysql:8
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: restaurant_service_db
+    ports:
+      - "33063:3306"
+    volumes:
+      - restaurant_db_data:/var/lib/mysql
+    networks:
+      - backend-network
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8001:8001"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-order
+      DB_PORT: 3306
+      DB_DATABASE: order_service_db
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+    depends_on:
+      - mysql-order
+    networks:
+      - backend-network
+
+  mysql-order:
+    image: mysql:8
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: order_service_db
+    ports:
+      - "33064:3306"
+    volumes:
+      - order_db_data:/var/lib/mysql
+    networks:
+      - backend-network
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "8005:8005"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-payment
+      DB_PORT: 3306
+      DB_DATABASE: payment_service_db
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+    depends_on:
+      - mysql-payment
+    networks:
+      - backend-network
+
+  mysql-payment:
+    image: mysql:8
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: payment_service_db
+    ports:
+      - "33065:3306"
+    volumes:
+      - payment_db_data:/var/lib/mysql
+    networks:
+      - backend-network
+
+volumes:
+  auth_db_data:
+  user_db_data:
+  restaurant_db_data:
+  order_db_data:
+  payment_db_data:
+
+networks:
+  backend-network:
+    driver: bridge
