@@ -55,7 +55,7 @@ class OrderController extends Controller
 
         $client = new Client();
         try {
-            $response = $client->post('http://localhost:8000/payments', [
+            $response = $client->post('http://api-gateway:8000/payments/payments', [
                 'json' => [
                     'order_id' => $order->uuid,
                     'amount' => $order->total_amount,
@@ -63,11 +63,15 @@ class OrderController extends Controller
             ]);
 
             $paymentResponse = json_decode($response->getBody(), true);
+            \Log::info('Payment service response:', $paymentResponse);
         } catch (\Exception $e) {
             \Log::error('Payment service call failed: ' . $e->getMessage());
         }
 
-        return response()->json($order->load('items'), 201);
+        return response()->json([
+            'order' => $order->load('items'),
+            'payment' => $paymentResponse ?? null,
+        ], 201);
     }
 
     public function show($uuid)

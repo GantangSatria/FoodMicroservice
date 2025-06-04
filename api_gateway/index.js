@@ -1,8 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 const PORT = 8000;
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true
+}));
 
 // Proxy configuration
 app.use('/auth', createProxyMiddleware({ target: 'http://auth-service:8004', changeOrigin: true, pathRewrite: { '^/auth': '' } }));
