@@ -3,8 +3,11 @@
 **kITA BAYAR** adalah sistem backend berbasis microservice untuk platform pemesanan makanan online, terintegrasi dengan payment gateway **Midtrans**. Proyek ini dibangun untuk memberikan pengalaman pemesanan makanan yang seamless dan hemat biaya, serta memudahkan integrasi layanan restoran.
 
 
+**Microservice ini dikerjakan untuk memnuhi TUGAS AKHIR Mata Kuliah Teknologi Integrasi Sistem**
+
+
 <a href="#developer">
-  <img src="https://img.shields.io/badge/Lihat%20Developer-blue?style=for-the-badge" alt="tim pengembang">
+  <img src="https://img.shields.io/badge/Lihat%20Anggota%20Kelompok-blue?style=for-the-badge" alt="tim pengembang">
 </a>
 
 ---
